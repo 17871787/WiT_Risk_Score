@@ -11,8 +11,8 @@ export const LoanCalculator: React.FC = () => {
   const { loanAmount, loanTerm, updateLoanParameter } = useFarmStore();
   
   const riskScore = useMemo(
-    () => getRiskScore(emissionsIntensity),
-    [emissionsIntensity]
+    () => getRiskScore(emissionsIntensity, loanAmount),
+    [emissionsIntensity, loanAmount]
   );
   
   const interestRate = useMemo(
@@ -34,9 +34,15 @@ export const LoanCalculator: React.FC = () => {
     <div className="bg-white rounded-lg shadow-sm p-6">
       <h3 className="text-lg font-semibold mb-4">Financing Options</h3>
       
-      <div className="mb-4">
-        <span className="text-sm text-gray-600 mr-2">Risk Score:</span>
-        <RiskScoreBadge score={riskScore} />
+      <div className="mb-4 space-y-1">
+        <div>
+          <span className="text-sm text-gray-600 mr-2">Risk Score:</span>
+          <RiskScoreBadge score={riskScore} />
+        </div>
+        <div className="text-xs text-gray-500">
+          Loan tier: {loanAmount < 1000000 ? '< £1m' : 
+                      loanAmount < 5000000 ? '£1-5m' : '> £5m'}
+        </div>
       </div>
       
       <div className="space-y-4">

@@ -2,22 +2,37 @@ import { getRiskScore, getInterestRate, calculateMonthlyRepayment, calculateTota
 
 describe('Risk Score Calculations', () => {
   describe('getRiskScore', () => {
-    it('should return Low for emissions intensity < 1.0', () => {
-      expect(getRiskScore(0.5)).toBe('Low');
-      expect(getRiskScore(0.9)).toBe('Low');
-      expect(getRiskScore(0.99)).toBe('Low');
+    it('should return Low for low emissions and small loans', () => {
+      expect(getRiskScore(0.5, 500000)).toBe('Low');
+      expect(getRiskScore(0.9, 1000000)).toBe('Low');
+      expect(getRiskScore(0.99, 1400000)).toBe('Low');
     });
 
-    it('should return Medium for emissions intensity 1.0-1.5', () => {
-      expect(getRiskScore(1.0)).toBe('Medium');
-      expect(getRiskScore(1.2)).toBe('Medium');
-      expect(getRiskScore(1.5)).toBe('Medium');
+    it('should bump risk level for larger loans', () => {
+      // Low emissions + medium loan = Medium risk
+      expect(getRiskScore(0.9, 1500000)).toBe('Medium');
+      expect(getRiskScore(0.9, 2000000)).toBe('Medium');
+      
+      // Low emissions + large loan = High risk
+      expect(getRiskScore(0.9, 4000000)).toBe('High');
+      expect(getRiskScore(0.9, 6000000)).toBe('High');
     });
 
-    it('should return High for emissions intensity > 1.5', () => {
-      expect(getRiskScore(1.51)).toBe('High');
-      expect(getRiskScore(2.0)).toBe('High');
-      expect(getRiskScore(3.0)).toBe('High');
+    it('should return Medium for medium emissions', () => {
+      expect(getRiskScore(1.0, 500000)).toBe('Medium');
+      expect(getRiskScore(1.2, 1000000)).toBe('Medium');
+      expect(getRiskScore(1.5, 1400000)).toBe('Medium');
+    });
+
+    it('should bump Medium to High for large loans', () => {
+      expect(getRiskScore(1.2, 1500000)).toBe('High');
+      expect(getRiskScore(1.2, 4000000)).toBe('High');
+    });
+
+    it('should return High for high emissions regardless of loan', () => {
+      expect(getRiskScore(1.51, 100000)).toBe('High');
+      expect(getRiskScore(2.0, 500000)).toBe('High');
+      expect(getRiskScore(3.0, 10000000)).toBe('High');
     });
   });
 

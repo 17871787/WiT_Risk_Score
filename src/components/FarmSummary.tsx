@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { TrendingUp } from 'lucide-react';
 import { useCalculations } from '../hooks/useCalculations';
+import { useFarmStore } from '../context/FarmContext';
 import { getRiskScore } from '../lib/calculations/risk';
 import { RiskScoreBadge } from './RiskScoreBadge';
 
@@ -15,9 +16,11 @@ export const FarmSummary: React.FC = () => {
     emissionsIntensity
   } = useCalculations();
   
+  const { loanAmount } = useFarmStore();
+  
   const riskScore = useMemo(
-    () => getRiskScore(emissionsIntensity),
-    [emissionsIntensity]
+    () => getRiskScore(emissionsIntensity, loanAmount),
+    [emissionsIntensity, loanAmount]
   );
   
   return (

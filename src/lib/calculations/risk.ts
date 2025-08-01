@@ -3,14 +3,32 @@
 export type RiskScore = 'Low' | 'Medium' | 'High';
 
 /**
- * Determine risk score based on emissions intensity
+ * Determine composite risk score based on emissions intensity and loan amount
  * @param emissionsIntensity kg CO₂e per liter of milk
+ * @param loanAmount Loan amount in £
  * @returns Risk score category
  */
-export const getRiskScore = (emissionsIntensity: number): RiskScore => {
-  if (emissionsIntensity < 1.0) return 'Low';
-  if (emissionsIntensity <= 1.5) return 'Medium';
-  return 'High';
+export const getRiskScore = (emissionsIntensity: number, loanAmount: number): RiskScore => {
+  // Base risk on emissions first
+  let risk: RiskScore;
+  if (emissionsIntensity < 1.0) {
+    risk = 'Low';
+  } else if (emissionsIntensity <= 1.5) {
+    risk = 'Medium';
+  } else {
+    risk = 'High';
+  }
+
+  // Leverage bump: loans ≥ £1.5m bump one level, ≥ £4m bump two levels
+  const bump = loanAmount >= 4000000 ? 2 : 
+                loanAmount >= 1500000 ? 1 : 0;
+
+  // Apply bump (cap at High)
+  const riskOrder: RiskScore[] = ['Low', 'Medium', 'High'];
+  const currentIndex = riskOrder.indexOf(risk);
+  const newIndex = Math.min(2, currentIndex + bump);
+  
+  return riskOrder[newIndex];
 };
 
 /**
