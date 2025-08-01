@@ -1,5 +1,7 @@
 # GHG WHAT-IF Tool
 
+[![Lighthouse CI](https://github.com/17871787/WiT_Risk_Score/actions/workflows/lighthouse-ci.yml/badge.svg)](https://github.com/17871787/WiT_Risk_Score/actions/workflows/lighthouse-ci.yml)
+
 A comprehensive React/TypeScript application for dairy farm greenhouse gas (GHG) optimization and carbon footprint analysis.
 
 ## Features

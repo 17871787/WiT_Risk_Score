@@ -8,7 +8,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "jest",
+    "lighthouse": "node scripts/lighthouse-local.js",
+    "lighthouse:ci": "lhci autorun",
+    "lighthouse:report": "node scripts/lighthouse-local.js && open lighthouse-report.html"
   },
   "dependencies": {
     "react": "^18.2.0",
