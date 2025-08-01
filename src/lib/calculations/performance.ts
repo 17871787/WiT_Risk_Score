@@ -48,7 +48,10 @@ export const calculateNitrogenEfficiency = (
   const grazingAdjustment = 0.1 * safeDivide(grazingMonths, 12);
   const yieldAdjustment = 0.001 * (milkYield - 8500);
   
-  return baseEfficiency - nitrogenAdjustment + grazingAdjustment + yieldAdjustment;
+  const efficiency = baseEfficiency - nitrogenAdjustment + grazingAdjustment + yieldAdjustment;
+  
+  // Nitrogen efficiency should be between 5% and 50% for dairy farms
+  return clamp(efficiency, 5, 50);
 };
 
 /**
