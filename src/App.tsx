@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
+import { LoanCalculator } from './components/LoanCalculator';
 import { CostBreakdown } from './components/charts/CostBreakdown';
 import { PerformanceMetrics } from './components/charts/PerformanceMetrics';
 import { FarmImpact } from './components/charts/FarmImpact';
@@ -29,6 +30,9 @@ function App() {
         
         {mainView === 'default' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="col-span-1 lg:col-span-2">
+              <LoanCalculator />
+            </div>
             <CostBreakdown />
             <PerformanceMetrics />
             <FarmImpact />

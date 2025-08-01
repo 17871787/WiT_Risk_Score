@@ -31,7 +31,7 @@ export const LoanCalculator: React.FC = () => {
   );
   
   return (
-    <div className="mt-8 p-6 bg-gray-50 rounded-lg">
+    <div className="bg-white rounded-lg shadow-sm p-6">
       <h3 className="text-lg font-semibold mb-4">Financing Options</h3>
       
       <div className="mb-4">
@@ -92,8 +92,8 @@ export const LoanCalculator: React.FC = () => {
       
       <div className="mt-6 pt-4 border-t border-gray-200">
         <a
-          href="mailto:relationship.manager@bank.com?subject=GHG%20Loan%20Inquiry%20-%20Risk%20Score%3A%20{riskScore}"
-          className="flex items-center justify-center w-full px-4 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          href={`mailto:relationship.manager@bank.com?subject=GHG%20Loan%20Inquiry%20-%20Risk%20Score%3A%20${riskScore}`}
+          className="w-full text-center bg-indigo-600 text-white px-4 py-3 rounded-md hover:bg-indigo-700 transition-colors flex items-center justify-center"
         >
           <Phone className="mr-2" size={18} />
           Click here to speak to your Relationship Manager

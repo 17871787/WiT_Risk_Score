@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCalculations } from '../../hooks/useCalculations';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { CHART_ANIMATION_DURATION } from '../../constants/ui';
 
 const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6'];
 
@@ -41,6 +42,8 @@ export const CostBreakdown: React.FC = () => {
                 outerRadius={80}
                 paddingAngle={2}
                 dataKey="value"
+                isAnimationActive={CHART_ANIMATION_DURATION > 0}
+                animationDuration={CHART_ANIMATION_DURATION}
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
