@@ -1,0 +1,216 @@
+# GHG WHAT-IF Tool - LLM Context File
+
+## Project Overview
+A React/TypeScript application for dairy farm greenhouse gas optimization and financial risk assessment. Calculates emissions, sequestration potential, and provides loan recommendations based on environmental performance.
+
+## Architecture Goals
+- **Modularity**: Separated concerns (calculations, UI, state)
+- **Type Safety**: Full TypeScript coverage
+- **Performance**: Memoized calculations, minimal re-renders
+- **Testability**: Pure functions for business logic
+- **Accessibility**: WCAG compliant forms
+
+## Core Modules
+
+### 1. State Management (`/context/FarmContext.tsx`)
+**Goal**: Centralized state using Zustand
+```typescript
+useFarmStore() => {
+  parameters: FarmParameters    // All farm inputs
+  loanAmount: number           // Financial params
+  loanTerm: number
+  updateParameter<K>(key: K, value: FarmParameters[K])
+  updateLoanParameter(key: 'loanAmount'|'loanTerm', value: number)
+}
+```
+
+### 2. Calculations (`/lib/calculations/`)
+**Goal**: Pure functions for business logic
+
+#### emissions.ts
+```typescript
+calculateEmissions(params: FarmParameters) => EmissionsResult
+calculateEmissionsIntensity(totalEmissions: number, milkYield: number) => number
+calculateSequestration(params: FarmParameters) => SequestrationResult
+getSeasonalAdjustments(season: Season) => SeasonalFactors
+```
+
+#### lme.ts (Lifetime Methane Efficiency)
+```typescript
+calculateLME(params: LMECalculationParams) => LMEResult
+getLMEInterpretation(lme: number) => LMEInterpretation
+```
+
+#### economics.ts
+```typescript
+calculateTotalAnnualCost(params: CostParams) => number
+calculateCostPerLitre(totalCost: number, milkYield: number) => number
+calculateCostBreakdown(params: CostParams) => CostBreakdownItem[]
+calculateFarmRevenue(milkYield: number, herdSize: number) => number
+```
+
+#### performance.ts
+```typescript
+calculatePerformanceMetrics(params, intensity, costPerL, seasonalFactors) => PerformanceMetrics
+calculateFeedEfficiency(milkYield: number, concentrateFeed: number) => number
+calculateNitrogenUseEfficiency(params: FarmParameters) => number
+```
+
+#### risk.ts
+```typescript
+getRiskScore(emissionsIntensity: number, loanAmount: number) => 'Low'|'Medium'|'High'
+getInterestRate(riskScore: RiskScore, loanAmount: number) => number
+calculateMonthlyRepayment(principal: number, rate: number, years: number) => number
+```
+
+### 3. Custom Hook (`/hooks/useCalculations.ts`)
+**Goal**: Memoized calculations with dependencies
+```typescript
+useCalculations() => {
+  // All calculated values with automatic memoization
+  emissions, emissionsIntensity, sequestration, netFarmEmissions,
+  totalFarmProduction, totalAnnualCost, costPerLitre, costBreakdown,
+  totalFarmCost, totalFarmRevenue, totalFarmProfit, lmeResult,
+  performanceMetrics, seasonalFactors
+}
+```
+
+### 4. Components Structure
+
+#### UI Components (`/components/ui/`)
+- `Slider`: Range input with validation, warnings
+- `Select`: Dropdown with option normalization
+
+#### Parameter Components (`/components/parameters/`)
+- `BasicParameters`: Feed, system type, seasonal inputs
+- `FarmParameters`: Production metrics
+- `HeiferParameters`: Reproduction parameters
+- `SequestrationParameters`: Carbon capture options
+
+#### Chart Components (`/components/charts/`)
+- `CostBreakdown`: Pie chart with tooltips
+- `PerformanceMetrics`: KPI grid
+- `FarmImpact`: Emissions summary
+- `LMEDisplay`: Efficiency visualization
+- `NetCarbonProjection`: 10-year forecast
+
+#### Main Components
+- `App`: Layout controller, view switching
+- `Sidebar`: Parameter input tabs
+- `Header`: Navigation, export functionality
+- `FarmSummary`: Key metrics display
+- `LoanCalculator`: Financial options
+- `EffectivenessDisplay`: Optimization suggestions
+
+### 5. Constants (`/constants/`)
+```typescript
+EMISSION_FACTORS    // Base emissions values
+CALC_CONSTANTS      // Calculation parameters
+ECONOMIC_CONSTANTS  // Financial values
+SEQUESTRATION_RATES // Carbon capture rates
+SEASONAL_FACTORS    // Season adjustments
+SYSTEM_FACTORS      // Production system multipliers
+PERFORMANCE_THRESHOLDS // Target values
+LME_THRESHOLDS     // Efficiency categories
+```
+
+### 6. Types (`/types/index.ts`)
+Core interfaces: FarmParameters, EmissionsResult, SequestrationResult, LMEResult, PerformanceMetrics, CostBreakdownItem
+
+## File Connection Map
+```
+                    ┌─────────────┐
+                    │    App.tsx  │
+                    │  (Layout)   │
+                    └──────┬──────┘
+                           │
+        ┌──────────────────┼──────────────────┐
+        │                  │                  │
+   ┌────▼─────┐      ┌─────▼─────┐     ┌─────▼─────┐
+   │ Sidebar  │      │  Header   │     │   Main    │
+   │  (.tsx)  │      │  (.tsx)   │     │  Content  │
+   └────┬─────┘      └───────────┘     └─────┬─────┘
+        │                                      │
+        │                               ┌──────┴───────┐
+   ┌────▼──────────┐                    │              │
+   │  Parameter    │              ┌─────▼─────┐  ┌─────▼─────┐
+   │  Components   │              │   Chart   │  │   Loan    │
+   │ (/parameters) │              │Components │  │Calculator │
+   └───────────────┘              └─────┬─────┘  └─────┬─────┘
+                                        │              │
+                    ┌───────────────────┴──────────────┘
+                    │
+              ┌─────▼──────┐         ┌─────────────┐
+              │useCalculations│◄──────│ FarmContext │
+              │   (hook)    │         │  (Zustand)  │
+              └─────┬──────┘         └─────────────┘
+                    │
+        ┌───────────┴──────────────┐
+        │                          │
+   ┌────▼─────┐            ┌──────▼──────┐
+   │   /lib   │            │ /constants  │
+   │/calculations│         │  (values)   │
+   └──────────┘            └─────────────┘
+```
+
+## Code Style Guide
+- **TypeScript**: Strict mode, explicit types for params/returns
+- **React**: Functional components with hooks
+- **State**: Zustand for global, useState for local
+- **Styling**: Tailwind CSS inline classes
+- **Naming**: 
+  - Components: PascalCase
+  - Functions: camelCase
+  - Constants: UPPER_SNAKE_CASE
+  - Types: PascalCase with descriptive suffixes (Result, Params)
+- **Exports**: Named exports for functions, default for components
+- **Comments**: JSDoc for public APIs, inline for complex logic
+
+## Data Formats
+- **Emissions**: kg CO₂e/year (converted internally)
+- **Costs**: GBP (£), calculated annually, displayed varied
+- **Percentages**: Decimal internally (0.15), display as % (15%)
+- **Dates**: Days as base unit, converted as needed
+- **Scientific**: GWP factors (CH₄=28, N₂O=298)
+
+## Architecture Conclusions
+**Strengths**:
+- Clear separation of concerns
+- Testable calculation layer
+- Type-safe throughout
+- Performance optimized with memoization
+- Responsive design with Tailwind
+
+**Patterns**:
+- Container/Presenter separation
+- Custom hooks for shared logic
+- Pure functions for calculations
+- Centralized constants
+- Atomic, reusable UI components
+
+**Trade-offs**:
+- Bundle size (~560KB) due to Recharts
+- Some prop drilling in parameter components
+- Seasonal factors hardcoded for UK climate
+- No backend integration (all client-side)
+
+**Extensibility Points**:
+- Add new parameters to FarmParameters interface
+- New calculations in /lib/calculations/
+- Additional charts in /components/charts/
+- New sequestration methods in constants
+- API integration via context providers
+
+## Key Algorithms
+1. **Emissions**: DMI-based enteric + manure + feed + N₂O
+2. **LME**: Lifetime production / lifetime emissions
+3. **Risk Score**: Emissions intensity + loan leverage
+4. **Loan Pricing**: Risk matrix × loan size brackets
+5. **Projections**: Linear sequestration + compound improvements
+
+## Performance Considerations
+- All calculations memoized in useCalculations hook
+- Charts only re-render on data change
+- Validation happens on blur, not keystroke
+- Constants imported statically, tree-shaken
+- No unnecessary API calls (fully offline capable)
