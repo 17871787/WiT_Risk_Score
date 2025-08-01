@@ -7,6 +7,7 @@ import { PerformanceMetrics } from './components/charts/PerformanceMetrics';
 import { FarmImpact } from './components/charts/FarmImpact';
 import { LMEDisplay } from './components/charts/LMEDisplay';
 import { NetCarbonProjection } from './components/charts/NetCarbonProjection';
+import { ScenarioComparison } from './components/scenarios/ScenarioComparison';
 import { useFarmStore } from './context/FarmContext';
 import './styles/globals.css';
 
@@ -36,7 +37,9 @@ function App() {
             <CostBreakdown />
             <PerformanceMetrics />
             <FarmImpact />
-            {/* Additional components would go here */}
+            <div className="col-span-1 lg:col-span-2">
+              <ScenarioComparison />
+            </div>
           </div>
         )}
         

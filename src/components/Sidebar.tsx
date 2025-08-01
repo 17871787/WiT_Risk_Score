@@ -5,11 +5,12 @@ import { FarmParameters } from './parameters/FarmParameters';
 import { HeiferParameters } from './parameters/HeiferParameters';
 import { SequestrationParameters } from './parameters/SequestrationParameters';
 import { EffectivenessDisplay } from './EffectivenessDisplay';
+import { ScenarioBuilder } from './scenarios/ScenarioBuilder';
 import { FarmSummary } from './FarmSummary';
 import { useCalculations } from '../hooks/useCalculations';
 import { PERFORMANCE_THRESHOLDS } from '../constants/emissions';
 
-type TabType = 'basic' | 'farm' | 'heifer' | 'sequestration' | 'effectiveness';
+type TabType = 'basic' | 'farm' | 'heifer' | 'sequestration' | 'effectiveness' | 'scenarios';
 
 export const Sidebar: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('basic');
@@ -31,6 +32,8 @@ export const Sidebar: React.FC = () => {
         return calculations.sequestration.totalSequestration < calculations.totalFarmEmissions * 0.1;
       case 'effectiveness':
         return calculations.performanceMetrics.overallHerdEffectiveness < PERFORMANCE_THRESHOLDS.OVERALL_HERD_EFFECTIVENESS_TARGET;
+      case 'scenarios':
+        return false; // No warnings for scenarios tab
       default:
         return false;
     }
@@ -102,6 +105,17 @@ export const Sidebar: React.FC = () => {
             Effectiveness
             {getTabWarning('effectiveness') && <span className="ml-1 text-orange-500">●</span>}
           </button>
+          <button
+            onClick={() => setActiveTab('scenarios')}
+            className={`px-3 py-2 font-medium text-sm border-b-2 transition-colors ${
+              activeTab === 'scenarios' 
+                ? 'border-blue-500 text-blue-600' 
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Scenarios
+            <span className="text-xs ml-1">🚀</span>
+          </button>
         </div>
         
         {/* Tab Content */}
@@ -111,6 +125,7 @@ export const Sidebar: React.FC = () => {
           {activeTab === 'heifer' && <HeiferParameters />}
           {activeTab === 'sequestration' && <SequestrationParameters />}
           {activeTab === 'effectiveness' && <EffectivenessDisplay />}
+          {activeTab === 'scenarios' && <ScenarioBuilder />}
         </div>
       </div>
 
