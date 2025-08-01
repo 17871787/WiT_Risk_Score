@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { TrendingUp } from 'lucide-react';
 import { useCalculations } from '../hooks/useCalculations';
+import { getRiskScore } from '../lib/calculations/risk';
+import { RiskScoreBadge } from './RiskScoreBadge';
 
 export const FarmSummary: React.FC = () => {
   const {
@@ -9,15 +11,24 @@ export const FarmSummary: React.FC = () => {
     netFarmEmissions,
     totalFarmProduction,
     totalFarmCost,
-    totalFarmProfit
+    totalFarmProfit,
+    emissionsIntensity
   } = useCalculations();
+  
+  const riskScore = useMemo(
+    () => getRiskScore(emissionsIntensity),
+    [emissionsIntensity]
+  );
   
   return (
     <div className="mt-8 pt-6 border-t">
-      <h3 className="text-sm font-semibold mb-4 flex items-center">
-        <TrendingUp className="mr-2" size={16} />
-        Farm Summary
-      </h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-sm font-semibold flex items-center">
+          <TrendingUp className="mr-2" size={16} />
+          Farm Summary
+        </h3>
+        <RiskScoreBadge score={riskScore} />
+      </div>
       
       <div className="space-y-3">
         <div>

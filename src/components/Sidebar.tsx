@@ -6,6 +6,7 @@ import { HeiferParameters } from './parameters/HeiferParameters';
 import { SequestrationParameters } from './parameters/SequestrationParameters';
 import { EffectivenessDisplay } from './EffectivenessDisplay';
 import { FarmSummary } from './FarmSummary';
+import { LoanCalculator } from './LoanCalculator';
 import { useCalculations } from '../hooks/useCalculations';
 import { PERFORMANCE_THRESHOLDS } from '../constants/emissions';
 
@@ -116,6 +117,9 @@ export const Sidebar: React.FC = () => {
 
       {/* Farm Summary */}
       <FarmSummary />
+      
+      {/* Loan Calculator */}
+      <LoanCalculator />
     </div>
   );
 };

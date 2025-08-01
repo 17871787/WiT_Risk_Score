@@ -5,11 +5,14 @@ import { FarmParameters } from '../types';
 
 interface FarmState {
   parameters: FarmParameters;
+  loanAmount: number;
+  loanTerm: number;
   updateParameter: <K extends keyof FarmParameters>(
     key: K, 
     value: FarmParameters[K]
   ) => void;
   updateMultipleParameters: (updates: Partial<FarmParameters>) => void;
+  updateLoanParameter: (key: 'loanAmount' | 'loanTerm', value: number) => void;
   resetParameters: () => void;
 }
 
@@ -51,6 +54,8 @@ const defaultParameters: FarmParameters = {
 
 export const useFarmStore = create<FarmState>((set) => ({
   parameters: defaultParameters,
+  loanAmount: 500000,
+  loanTerm: 10,
   
   updateParameter: (key, value) => 
     set((state) => ({
@@ -68,6 +73,15 @@ export const useFarmStore = create<FarmState>((set) => ({
       }
     })),
   
+  updateLoanParameter: (key, value) =>
+    set((state) => ({
+      [key]: value
+    })),
+  
   resetParameters: () => 
-    set({ parameters: defaultParameters })
+    set({ 
+      parameters: defaultParameters,
+      loanAmount: 500000,
+      loanTerm: 10
+    })
 }));
