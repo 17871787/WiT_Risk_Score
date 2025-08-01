@@ -127,7 +127,7 @@ export const calculateLME = (params: LMECalculationParams): LMEResult => {
     milkYield: annualMilkYield,
     avgLactations: averageLactations,
     calvingInterval,
-    ageFirstCalving,
+    ageFirstCalving: ageAtFirstCalving,
     cullingAge: 6,
     birthweight: 40,
     landType: 'Lowland' as const,
