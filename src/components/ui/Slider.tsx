@@ -13,6 +13,7 @@ interface SliderProps {
   decimals?: number;
   warning?: { threshold: number; message: string };
   info?: string;
+  id?: string;
 }
 
 export const Slider: React.FC<SliderProps> = ({
@@ -26,7 +27,8 @@ export const Slider: React.FC<SliderProps> = ({
   showValue = true,
   decimals = 1,
   warning,
-  info
+  info,
+  id
 }) => {
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = validateNumericInput(e.target.value, min, max, decimals);
@@ -38,11 +40,12 @@ export const Slider: React.FC<SliderProps> = ({
     value.toFixed(decimals);
   
   const showWarning = warning && value > warning.threshold;
+  const inputId = id || `slider-${label.toLowerCase().replace(/\s+/g, '-')}`;
   
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
-        <label className="text-sm font-medium text-gray-700">
+        <label htmlFor={inputId} className="text-sm font-medium text-gray-700">
           {label}
         </label>
         {showValue && (
@@ -52,6 +55,8 @@ export const Slider: React.FC<SliderProps> = ({
         )}
       </div>
       <input
+        id={inputId}
+        name={inputId}
         type="range"
         min={min}
         max={max}
@@ -59,7 +64,6 @@ export const Slider: React.FC<SliderProps> = ({
         value={value}
         onChange={handleChange}
         className="w-full"
-        aria-label={label}
         aria-valuenow={value}
         aria-valuemin={min}
         aria-valuemax={max}

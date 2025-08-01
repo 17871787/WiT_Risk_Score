@@ -100,8 +100,10 @@ export const SequestrationParameters: React.FC = () => {
 
       {/* Technology Options */}
       <div className="space-y-3">
-        <label className="flex items-center text-sm">
+        <label htmlFor="methane-inhibitor-checkbox" className="flex items-center text-sm">
           <input
+            id="methane-inhibitor-checkbox"
+            name="methane-inhibitor-checkbox"
             type="checkbox"
             checked={parameters.methaneInhibitor}
             onChange={(e) => updateParameter('methaneInhibitor', e.target.checked)}
@@ -115,8 +117,10 @@ export const SequestrationParameters: React.FC = () => {
           </div>
         )}
         
-        <label className="flex items-center text-sm">
+        <label htmlFor="improved-manure-checkbox" className="flex items-center text-sm">
           <input
+            id="improved-manure-checkbox"
+            name="improved-manure-checkbox"
             type="checkbox"
             checked={parameters.improvedManure}
             onChange={(e) => updateParameter('improvedManure', e.target.checked)}

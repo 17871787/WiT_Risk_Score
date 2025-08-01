@@ -98,8 +98,10 @@ export const BasicParameters: React.FC = () => {
         
         {parameters.soyaContent > 0 && (
           <div className="mt-2">
-            <label className="flex items-center text-xs">
+            <label htmlFor="deforestation-free-checkbox" className="flex items-center text-xs">
               <input
+                id="deforestation-free-checkbox"
+                name="deforestation-free-checkbox"
                 type="checkbox"
                 checked={parameters.deforestationFree}
                 onChange={(e) => updateParameter('deforestationFree', e.target.checked)}
