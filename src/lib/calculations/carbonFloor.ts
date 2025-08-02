@@ -1,12 +1,13 @@
 // Theoretical Minimum (biological floor) calculations
 
 import { FarmParameters } from '../../types';
+import { THEORETICAL_MINIMUM } from './constants';
 
-// Constants for Theoretical Minimum
+// Use centralized constants with environment variable override capability
 export const TM_CONSTANTS = {
   // Base biological minimum per cow (kg CO2e/year)
-  // Based on: 13g CH4/L × 25L/day × 365 days × 28 GWP100
-  BASE_PER_COW: 2000,
+  // Can be overridden via REACT_APP_TM_PER_COW environment variable
+  BASE_PER_COW: THEORETICAL_MINIMUM.BASE_KG_CO2E_PER_COW,
   
   // Percentage thresholds for interpretation
   THRESHOLDS: {
@@ -14,7 +15,10 @@ export const TM_CONSTANTS = {
     GOOD: 25,         // Within 25% of TM
     AVERAGE: 50,      // Within 50% of TM
     // Above 50% is Poor
-  }
+  },
+  
+  // Regional reference values for comparison
+  REGIONAL_REFERENCES: THEORETICAL_MINIMUM.REFERENCES
 } as const;
 
 /**
