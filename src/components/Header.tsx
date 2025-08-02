@@ -1,7 +1,8 @@
 import React from 'react';
-import { Download } from 'lucide-react';
+import { Download, AlertTriangle } from 'lucide-react';
 import { useCalculations } from '../hooks/useCalculations';
 import { exportToCSV } from '../lib/utils/export';
+import { calculatePerformancePenalty } from '../lib/calculations/emissions';
 
 export const Header: React.FC = () => {
   const {
@@ -11,6 +12,9 @@ export const Header: React.FC = () => {
     costPerLitre,
     performanceMetrics
   } = useCalculations();
+  
+  const performancePenalty = calculatePerformancePenalty(parameters);
+  const penaltyPercentage = ((performancePenalty - 1) * 100).toFixed(0);
   
   const handleExport = () => {
     exportToCSV({
@@ -34,6 +38,12 @@ export const Header: React.FC = () => {
           </span>
         </div>
         <div className="flex items-center space-x-6 text-sm">
+          {performancePenalty > 1.05 && (
+            <div className="flex items-center space-x-2 bg-red-100 text-red-800 px-3 py-1 rounded-full">
+              <AlertTriangle size={16} />
+              <span className="font-medium">+{penaltyPercentage}% emissions penalty</span>
+            </div>
+          )}
           <div className="text-center">
             <div className="font-semibold text-gray-900">{parameters.herdSize} cows</div>
             <div className="text-xs text-gray-500">Herd Size</div>

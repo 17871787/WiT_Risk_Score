@@ -23,6 +23,61 @@ export const getSeasonalAdjustments = (season: Season) => {
 };
 
 /**
+ * Calculate performance penalty multiplier based on KPIs
+ */
+export const calculatePerformancePenalty = (params: FarmParameters): number => {
+  let penalty = 1.0;
+  
+  // Poor milk yield penalty (below 8000L is inefficient)
+  if (params.milkYield < 8000) {
+    penalty *= 1 + (8000 - params.milkYield) / 8000 * 0.2; // up to 20% penalty
+  }
+  
+  // Extended calving interval penalty
+  if (params.calvingInterval > 13) {
+    penalty *= 1 + (params.calvingInterval - 13) / 13 * 0.15; // up to 15% penalty per month over target
+  }
+  
+  // Late age at first calving penalty
+  if (params.ageFirstCalving > 24) {
+    penalty *= 1 + (params.ageFirstCalving - 24) / 24 * 0.1; // up to 10% penalty per month over target
+  }
+  
+  // Low average lactations penalty (indicates high culling rate)
+  if (params.avgLactations < 3) {
+    penalty *= 1 + (3 - params.avgLactations) / 3 * 0.2; // up to 20% penalty
+  }
+  
+  // Feed efficiency penalty - high concentrate feed relative to yield
+  const feedEfficiencyRatio = safeDivide(params.concentrateFeed * 365, params.milkYield, 1);
+  if (feedEfficiencyRatio > 0.35) { // kg feed per L milk
+    penalty *= 1 + (feedEfficiencyRatio - 0.35) * 0.5; // significant penalty for poor feed conversion
+  }
+  
+  // Poor feed quality penalty
+  if (params.feedCarbonFootprint > 1.0) {
+    penalty *= 1 + (params.feedCarbonFootprint - 1.0) * 0.3; // 30% penalty per kg CO2e/kg feed over target
+  }
+  
+  // High nitrogen usage penalty
+  if (params.nitrogenRate > 150) {
+    penalty *= 1 + (params.nitrogenRate - 150) / 150 * 0.2; // up to 20% penalty
+  }
+  
+  // Non-deforestation free soya penalty
+  if (!params.deforestationFree && params.soyaContent > 10) {
+    penalty *= 1 + params.soyaContent / 100 * 0.3; // up to 30% penalty for high soya content
+  }
+  
+  // Limited grazing penalty
+  if (params.grazingMonths < 6) {
+    penalty *= 1 + (6 - params.grazingMonths) / 6 * 0.15; // up to 15% penalty
+  }
+  
+  return penalty;
+};
+
+/**
  * Calculate emissions breakdown for a farm
  */
 export const calculateEmissions = (params: FarmParameters): EmissionBreakdown => {
@@ -30,26 +85,30 @@ export const calculateEmissions = (params: FarmParameters): EmissionBreakdown =>
   const adjustedFeed = params.concentrateFeed * seasonalFactors.feed;
   const adjustedNitrogen = params.nitrogenRate * seasonalFactors.nitrogen;
   
-  // Enteric emissions (kg CO2e/cow/year)
-  const entericEmissions = EMISSION_FACTORS.BASE_ENTERIC + 
-    (adjustedFeed * EMISSION_FACTORS.FEED_MULTIPLIER);
+  // Get performance penalty multiplier
+  const performancePenalty = calculatePerformancePenalty(params);
   
-  // Manure emissions
+  // Enteric emissions (kg CO2e/cow/year) - affected by poor performance
+  const baseEntericEmissions = EMISSION_FACTORS.BASE_ENTERIC + 
+    (adjustedFeed * EMISSION_FACTORS.FEED_MULTIPLIER);
+  const entericEmissions = baseEntericEmissions * performancePenalty;
+  
+  // Manure emissions - worse with poor management
   const baseManureEmissions = EMISSION_FACTORS.MANURE_SYSTEMS[params.manureSystem] || 
     EMISSION_FACTORS.MANURE_SYSTEMS['Liquid/slurry'];
-  const manureEmissions = baseManureEmissions - 
-    (params.grazingMonths * EMISSION_FACTORS.GRAZING_REDUCTION);
+  const manureReduction = params.grazingMonths * EMISSION_FACTORS.GRAZING_REDUCTION;
+  const manureEmissions = (baseManureEmissions - manureReduction) * performancePenalty;
   
-  // Feed production emissions
-  const feedEmissions = adjustedFeed * 365 * params.feedCarbonFootprint;
+  // Feed production emissions - higher with inefficient feeding
+  const feedEmissions = adjustedFeed * 365 * params.feedCarbonFootprint * performancePenalty;
   
   // Deforestation emissions
   const soyaKgPerYear = adjustedFeed * 365 * safeDivide(params.soyaContent, 100);
   const deforestationEmissions = params.deforestationFree ? 
-    0 : soyaKgPerYear * EMISSION_FACTORS.DEFORESTATION_FACTOR;
+    0 : soyaKgPerYear * EMISSION_FACTORS.DEFORESTATION_FACTOR * performancePenalty;
   
-  // Nitrogen emissions
-  const nitrogenEmissions = adjustedNitrogen * EMISSION_FACTORS.NITROGEN_MULTIPLIER;
+  // Nitrogen emissions - worse with over-application
+  const nitrogenEmissions = adjustedNitrogen * EMISSION_FACTORS.NITROGEN_MULTIPLIER * performancePenalty;
   
   // Total annual emissions
   const totalAnnualEmissions = entericEmissions + 

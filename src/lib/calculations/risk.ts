@@ -9,13 +9,19 @@ export type RiskScore = 'Low' | 'Medium' | 'High';
  * @returns Risk score category
  */
 export const getRiskScore = (emissionsIntensity: number, loanAmount: number): RiskScore => {
-  // Base risk on emissions first
+  // More sensitive emissions thresholds
   let risk: RiskScore;
-  if (emissionsIntensity < 1.0) {
+  if (emissionsIntensity < 0.9) {
     risk = 'Low';
-  } else if (emissionsIntensity <= 1.5) {
+  } else if (emissionsIntensity < 1.2) {
     risk = 'Medium';
   } else {
+    risk = 'High';
+  }
+
+  // Additional penalty for very high emissions
+  if (emissionsIntensity > 1.8) {
+    // Automatically high risk for extremely poor performance
     risk = 'High';
   }
 
