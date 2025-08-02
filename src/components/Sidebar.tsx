@@ -40,6 +40,7 @@ export const Sidebar: React.FC = () => {
     { id: 'sequestration', label: 'Sequestration', emoji: '💰', alert: getTabWarning('sequestration') },
     { id: 'effectiveness', label: 'Effectiveness', alert: getTabWarning('effectiveness') },
     { id: 'scenarios', label: 'Scenarios', emoji: '🚀' },
+    { id: 'financing', label: 'Financing', emoji: '💳' },
   ];
   
   return (

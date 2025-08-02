@@ -13,6 +13,7 @@ const HeiferDashboard = lazy(() => import('./dashboards/HeiferDashboard'));
 const SequestrationDashboard = lazy(() => import('./dashboards/SequestrationDashboard'));
 const EffectivenessDashboard = lazy(() => import('./dashboards/EffectivenessDashboard'));
 const ScenarioDashboard = lazy(() => import('./dashboards/ScenarioDashboard'));
+const FinancingDashboard = lazy(() => import('./dashboards/FinancingDashboard'));
 
 // Dashboard mapping
 const DASHBOARD_MAP: Record<TabType, React.FC<DashboardProps>> = {
@@ -22,6 +23,7 @@ const DASHBOARD_MAP: Record<TabType, React.FC<DashboardProps>> = {
   sequestration: SequestrationDashboard,
   effectiveness: EffectivenessDashboard,
   scenarios: ScenarioDashboard,
+  financing: FinancingDashboard,
 };
 
 // Main app content that uses the view context
