@@ -1,39 +1,40 @@
 # 🎯 Next Steps - GHG WHAT-IF Tool
 
-## 🔜 Immediate Next Tasks
+## ✅ Recently Completed Tasks
 
-### 1. GitHub Actions Workflow (Medium Priority)
+### 1. GitHub Actions Workflow ✓
 **File**: `.github/workflows/ci.yml`
-```yaml
-name: CI
-on: [push, pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - run: npm ci
-      - run: npm test
-      - run: npm run type-check
-      - run: npm run build
-```
+- Multi-version Node.js testing (16.x, 18.x, 20.x)
+- Automated tests, type checking, and builds
+- Lighthouse CI integration for PRs
+- Build artifact uploads
 
-### 2. WiT_Risk_Score Calculation Script (Medium Priority)
-**Purpose**: Standalone script to calculate risk scores
-**Location**: `scripts/calculateRiskScore.ts`
-**Implementation**:
-- Import risk calculation functions
-- Create CLI interface
-- Accept parameters via args or JSON
-- Output risk score and breakdown
+### 2. WiT_Risk_Score Calculation Script ✓
+**Location**: `scripts/calculateRiskScore.js` and `.ts`
+**Features**:
+- Full CLI interface with parameter support
+- JSON file input option
+- Detailed risk assessment output
+- Recommendations based on risk level
+- Example parameters file included
 
-### 3. Stakeholder Testing (High Priority)
+### 3. Stakeholder Testing Framework ✓
+**Location**: `tests/stakeholder-scenarios.md`
+**Includes**:
+- 4 detailed test scenarios
+- Validation checklist
+- Feedback forms
+- Risk matrix validation
+- Technical issues log
+
+## 🔜 Next Priority Tasks
+
+### 1. Stakeholder Testing Execution (High Priority)
 **Tasks**:
-- Create test scenarios for different farm types
-- Validate calculations with industry experts
-- Gather feedback on UI/UX
-- Document edge cases
+- Run testing sessions with real users
+- Collect feedback using the framework
+- Analyze results and prioritize fixes
+- Update calculations based on feedback
 
 ## 🚀 Future Enhancements
 
