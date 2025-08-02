@@ -1,8 +1,8 @@
 import React from 'react';
-import { Download, AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { useCalculations } from '../hooks/useCalculations';
-import { exportToCSV } from '../lib/utils/export';
 import { calculatePerformancePenalty } from '../lib/calculations/emissions';
+import { ExportButton } from './ExportButton';
 
 export const Header: React.FC = () => {
   const {
@@ -15,18 +15,6 @@ export const Header: React.FC = () => {
   
   const performancePenalty = calculatePerformancePenalty(parameters);
   const penaltyPercentage = ((performancePenalty - 1) * 100).toFixed(0);
-  
-  const handleExport = () => {
-    exportToCSV({
-      parameters,
-      calculations: {
-        emissionsIntensity,
-        netFarmEmissions,
-        costPerLitre,
-        performanceMetrics
-      }
-    });
-  };
   
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
@@ -75,14 +63,7 @@ export const Header: React.FC = () => {
             </div>
             <div className="text-xs text-gray-500">Effectiveness</div>
           </div>
-          <button
-            onClick={handleExport}
-            className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            aria-label="Export data to CSV"
-          >
-            <Download size={16} />
-            <span>Export CSV</span>
-          </button>
+          <ExportButton />
         </div>
       </div>
     </div>
