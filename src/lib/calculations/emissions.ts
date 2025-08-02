@@ -26,55 +26,56 @@ export const getSeasonalAdjustments = (season: Season) => {
  * Calculate performance penalty multiplier based on KPIs
  */
 export const calculatePerformancePenalty = (params: FarmParameters): number => {
-  let penalty = 1.0;
+  let penaltySum = 0; // Use additive penalties instead of multiplicative
   
   // Poor milk yield penalty (below 8000L is inefficient)
   if (params.milkYield < 8000) {
-    penalty *= 1 + (8000 - params.milkYield) / 8000 * 0.2; // up to 20% penalty
+    penaltySum += (8000 - params.milkYield) / 8000 * 0.08; // up to 8% penalty
   }
   
-  // Extended calving interval penalty
-  if (params.calvingInterval > 13) {
-    penalty *= 1 + (params.calvingInterval - 13) / 13 * 0.15; // up to 15% penalty per month over target
+  // Extended calving interval penalty (13 months = 395 days)
+  if (params.calvingInterval > 395) {
+    penaltySum += (params.calvingInterval - 395) / 365 * 0.05; // 5% per extra month
   }
   
   // Late age at first calving penalty
   if (params.ageFirstCalving > 24) {
-    penalty *= 1 + (params.ageFirstCalving - 24) / 24 * 0.1; // up to 10% penalty per month over target
+    penaltySum += (params.ageFirstCalving - 24) / 24 * 0.04; // 4% per extra month
   }
   
   // Low average lactations penalty (indicates high culling rate)
   if (params.avgLactations < 3) {
-    penalty *= 1 + (3 - params.avgLactations) / 3 * 0.2; // up to 20% penalty
+    penaltySum += (3 - params.avgLactations) / 3 * 0.06; // up to 6% penalty
   }
   
   // Feed efficiency penalty - high concentrate feed relative to yield
   const feedEfficiencyRatio = safeDivide(params.concentrateFeed * 365, params.milkYield, 1);
   if (feedEfficiencyRatio > 0.35) { // kg feed per L milk
-    penalty *= 1 + (feedEfficiencyRatio - 0.35) * 0.5; // significant penalty for poor feed conversion
+    penaltySum += Math.min((feedEfficiencyRatio - 0.35) * 0.2, 0.1); // up to 10% penalty
   }
   
   // Poor feed quality penalty
   if (params.feedCarbonFootprint > 1.0) {
-    penalty *= 1 + (params.feedCarbonFootprint - 1.0) * 0.3; // 30% penalty per kg CO2e/kg feed over target
+    penaltySum += Math.min((params.feedCarbonFootprint - 1.0) * 0.1, 0.05); // up to 5% penalty
   }
   
   // High nitrogen usage penalty
   if (params.nitrogenRate > 150) {
-    penalty *= 1 + (params.nitrogenRate - 150) / 150 * 0.2; // up to 20% penalty
+    penaltySum += Math.min((params.nitrogenRate - 150) / 300 * 0.06, 0.06); // up to 6% penalty
   }
   
   // Non-deforestation free soya penalty
   if (!params.deforestationFree && params.soyaContent > 10) {
-    penalty *= 1 + params.soyaContent / 100 * 0.3; // up to 30% penalty for high soya content
+    penaltySum += Math.min(params.soyaContent / 100 * 0.15, 0.08); // up to 8% penalty
   }
   
   // Limited grazing penalty
   if (params.grazingMonths < 6) {
-    penalty *= 1 + (6 - params.grazingMonths) / 6 * 0.15; // up to 15% penalty
+    penaltySum += (6 - params.grazingMonths) / 12 * 0.05; // up to 5% penalty
   }
   
-  return penalty;
+  // Cap total penalty at 50% increase
+  return 1 + Math.min(penaltySum, 0.5);
 };
 
 /**

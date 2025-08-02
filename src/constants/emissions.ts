@@ -2,26 +2,26 @@
 
 export const EMISSION_FACTORS = {
   // Enteric fermentation
-  BASE_ENTERIC: 3000, // kg CO2e/cow/year
-  FEED_MULTIPLIER: 50, // kg CO2e per kg of concentrate feed
+  BASE_ENTERIC: 2800, // kg CO2e/cow/year (reduced from 3000)
+  FEED_MULTIPLIER: 40, // kg CO2e per kg of concentrate feed (reduced from 50)
   
   // Manure management emission factors (kg CO2e/cow/year)
   MANURE_SYSTEMS: {
-    'Liquid/slurry': 800,
-    'Solid': 400,
-    'Daily spread': 200,
-    'Anaerobic digester': 100,
-    'Pasture': 300
+    'Liquid/slurry': 600,    // reduced from 800
+    'Solid': 350,           // reduced from 400
+    'Daily spread': 180,    // reduced from 200
+    'Anaerobic digester': 90,  // reduced from 100
+    'Pasture': 250          // reduced from 300
   },
   
   // Grazing reduction factor
-  GRAZING_REDUCTION: 20, // kg CO2e reduction per grazing month
+  GRAZING_REDUCTION: 25, // kg CO2e reduction per grazing month (increased benefit)
   
   // Deforestation
   DEFORESTATION_FACTOR: 3.5, // kg CO2e per kg of soya
   
   // Nitrogen
-  NITROGEN_MULTIPLIER: 5, // kg CO2e per kg N applied
+  NITROGEN_MULTIPLIER: 4.5, // kg CO2e per kg N applied (reduced from 5)
   
   // Feed quality adjustment
   FEED_QUALITY_BASE: 1.1,
