@@ -1,0 +1,61 @@
+{
+  "session_id": "ghg-tool-refactor-2025-08",
+  "last_active": "2025-08-02T10:45:00Z",
+  "working_directory": "C:\\Users\\jtowe\\ghg-tool",
+  "github_repo": "https://github.com/17871787/WiT_Risk_Score",
+  "production_url": "https://ghg-tool-five.vercel.app",
+  
+  "current_state": {
+    "architecture": "modular-typescript",
+    "bundler": "vite",
+    "state_management": "zustand",
+    "styling": "tailwind-css",
+    "deployment": "vercel",
+    "version": "1.0.0"
+  },
+  
+  "recent_changes": [
+    "Implemented dashboard architecture with ViewContext",
+    "Created 6 dashboard components for tab-based views",
+    "Added Scenario Builder with practice toggles",
+    "Implemented composite risk scoring",
+    "Reduced bundle size from 570KB to 193KB"
+  ],
+  
+  "key_files": [
+    "src/App.tsx",
+    "src/context/FarmContext.tsx",
+    "src/context/ViewContext.tsx",
+    "src/hooks/useCalculations.ts",
+    "src/hooks/useDashboardState.ts",
+    "src/lib/calculations/emissions.ts",
+    "src/lib/calculations/risk.ts",
+    "src/components/LoanCalculator.tsx",
+    "src/components/scenarios/ScenarioBuilder.tsx",
+    "TECHNICAL_DOCUMENTATION.md",
+    "llms.txt",
+    "ROADMAP.md"
+  ],
+  
+  "pending_tasks": [
+    "Populate dashboard components with actual content",
+    "Implement investment ROI calculator",
+    "Add CSV import functionality",
+    "Create PDF export feature",
+    "Integrate Barclays product API"
+  ],
+  
+  "authentication": {
+    "github": "configured via gh CLI",
+    "vercel": "authenticated via vercel CLI"
+  },
+  
+  "dependencies_snapshot": {
+    "react": "^18.2.0",
+    "typescript": "^5.0.0",
+    "vite": "^4.4.0",
+    "zustand": "^4.4.0",
+    "recharts": "^2.8.0",
+    "tailwindcss": "^3.3.0"
+  }
+}
