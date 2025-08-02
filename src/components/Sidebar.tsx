@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target } from 'lucide-react';
+import { Target, ChevronRight } from 'lucide-react';
 import { FarmSummary } from './FarmSummary';
 import { useCalculations } from '../hooks/useCalculations';
 import { useView } from '../context/ViewContext';
@@ -40,8 +40,15 @@ export const Sidebar: React.FC = () => {
           Parameters
         </h2>
         
-        {/* Tabs */}
-        <div className="flex space-x-1 mb-4 border-b">
+        {/* Tabs — now scrollable */}
+        <div
+          className="
+            flex space-x-1 mb-4 border-b
+            overflow-x-auto scrollbar-hide
+            relative
+          "
+          tabIndex={0}          /* arrow-key scroll */
+        >
           <button
             onClick={() => setActiveTab('basic')}
             className={`px-3 py-2 font-medium text-sm border-b-2 transition-colors ${
@@ -109,6 +116,21 @@ export const Sidebar: React.FC = () => {
             Scenarios
             <span className="text-xs ml-1">🚀</span>
           </button>
+          
+          {/* fade & chevron hint */}
+          <div
+            className="
+              pointer-events-none absolute right-0 top-0 h-full w-6
+              bg-gradient-to-l from-white
+            "
+          />
+          <ChevronRight
+            size={14}
+            className="
+              pointer-events-none absolute right-1 top-1/2 -translate-y-1/2
+              text-gray-400
+            "
+          />
         </div>
         
         {/* Tab content now rendered in dashboards */}

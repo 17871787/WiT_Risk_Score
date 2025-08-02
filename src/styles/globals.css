@@ -66,3 +66,11 @@ input[type="range"]::-moz-range-thumb {
 input[type="range"]::-moz-range-thumb:hover {
   background: #2563eb;
 }
+
+/* Hide scrollbar but keep scroll ability */
+.scrollbar-hide::-webkit-scrollbar { 
+  display: none; 
+}
+.scrollbar-hide { 
+  scrollbar-width: none; /* Firefox */
+}
