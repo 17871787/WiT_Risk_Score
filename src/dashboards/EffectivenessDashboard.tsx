@@ -1,12 +1,14 @@
 import React from 'react';
 import { DashboardProps } from '../hooks/useDashboardState';
 import { EffectivenessDisplay } from '../components/EffectivenessDisplay';
+import { NUEDisplay } from '../components/charts/NUEDisplay';
+import { LMEPlusDisplay } from '../components/charts/LMEPlusDisplay';
 
 const EffectivenessDashboard: React.FC<DashboardProps> = ({ state, actions }) => {
   return (
     <div className="p-6">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold mb-6">Lifetime Methane Effectiveness</h2>
+        <h2 className="text-2xl font-bold mb-6">Sustainability Effectiveness Metrics</h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* LME Score Panel */}
@@ -40,6 +42,12 @@ const EffectivenessDashboard: React.FC<DashboardProps> = ({ state, actions }) =>
               </div>
             </div>
           </div>
+          
+          {/* NUE Display */}
+          <NUEDisplay />
+          
+          {/* LME+NUE Combined Metric */}
+          <LMEPlusDisplay />
           
           {/* Effectiveness Parameters Display */}
           <div className="col-span-1 lg:col-span-2">

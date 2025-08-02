@@ -215,6 +215,42 @@ Where:
 - n = Years × 12
 ```
 
+### 8. Nitrogen Use Efficiency (NUE)
+
+#### 8.1 NUE Calculation
+```
+NUE = (N_Outputs / N_Inputs) × 100
+
+Where:
+N_Outputs = Milk_Yield × 0.0055  // kg N/cow/year (milk N content)
+N_Inputs = Applied_N + Feed_N
+
+Applied_N = N_Rate × Hectares_Per_Cow
+Feed_N = Concentrate_Feed × 365 × Feed_N_Content
+Feed_N_Content = Crude_Protein / 625  // Protein to N conversion
+```
+
+#### 8.2 N Balance
+```
+N_Balance = N_Inputs - N_Outputs  // kg N/cow/year surplus
+N_Loss_CO2e = N_Balance × 4.5     // Approximate N2O emissions equivalent
+```
+
+### 9. LME+NUE Combined Metric
+
+#### 9.1 LME+NUE Calculation
+```
+LME+NUE = LME × (NUE / 100)
+
+Sustainability_Score = min(50, LME/15 × 50) + min(50, NUE/150 × 50)
+```
+
+#### 9.2 Interpretation Thresholds
+- Excellent: Score ≥ 80 and LME+NUE ≥ 10
+- Good: Score ≥ 65 and LME+NUE ≥ 8
+- Average: Score ≥ 50 and LME+NUE ≥ 6
+- Poor: Below average thresholds
+
 ---
 
 ## Conversion Formulas
@@ -281,6 +317,26 @@ SEQUESTRATION_RATES = {
   SOIL_CARBON_PER_HA: 2.5,        // t CO₂e/ha/year
   COVER_CROPS_PER_HA: 1.5,        // t CO₂e/ha/year
   RENEWABLE_PER_KW: 0.4           // t CO₂e/kW/year
+}
+```
+
+### NUE Constants
+```typescript
+NUE_CONSTANTS = {
+  MILK_N_CONTENT: 0.0055,         // kg N per L milk
+  HECTARES_PER_COW: 0.5,          // Average land allocation
+  MANURE_N_EFFICIENCY: {
+    'Liquid/slurry': 0.45,        // 45% N utilization
+    'Solid': 0.35,
+    'Daily spread': 0.30,
+    'Anaerobic digester': 0.55,   // Best efficiency
+    'Pasture': 0.25
+  },
+  NUE_THRESHOLDS: {
+    POOR: 60,                     // < 60%
+    AVERAGE: 80,                  // 60-80%
+    GOOD: 100                     // 80-100%
+  }
 }
 ```
 
