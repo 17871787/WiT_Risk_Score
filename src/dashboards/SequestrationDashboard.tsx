@@ -1,7 +1,7 @@
 import React from 'react';
 import { DashboardProps } from '../hooks/useDashboardState';
 import { SequestrationParameters } from '../components/parameters/SequestrationParameters';
-import { NetCarbonProjection } from '../components/charts/NetCarbonProjection';
+import { NetCarbonProjectionV2 } from '../components/charts/NetCarbonProjectionV2';
 
 const SequestrationDashboard: React.FC<DashboardProps> = ({ state, actions }) => {
   const creditValue = state.sequestration.totalSequestration * 25; // £25 per tonne CO₂e
@@ -52,7 +52,7 @@ const SequestrationDashboard: React.FC<DashboardProps> = ({ state, actions }) =>
       
       {/* 10-Year Projection */}
       <div className="mt-6">
-        <NetCarbonProjection />
+        <NetCarbonProjectionV2 />
       </div>
     </div>
   );

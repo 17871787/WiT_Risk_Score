@@ -251,6 +251,42 @@ Sustainability_Score = min(50, LME/15 × 50) + min(50, NUE/150 × 50)
 - Average: Score ≥ 50 and LME+NUE ≥ 6
 - Poor: Below average thresholds
 
+### 10. Theoretical Minimum (Biological Floor)
+
+#### 10.1 TM Calculation
+```
+TM = Herd_Size × 2000 kg CO₂e/year
+
+Based on:
+- 13g CH₄/L milk × 25L/day × 365 days × 28 GWP₁₀₀ ≈ 2000 kg CO₂e/cow/year
+```
+
+#### 10.2 Performance Metrics
+```
+Percentage_Above_TM = ((Current_Emissions - TM) / TM) × 100
+Gap_to_TM = max(0, Current_Emissions - TM)
+```
+
+#### 10.3 Interpretation Thresholds
+- Excellent: ≤10% above TM
+- Good: ≤25% above TM  
+- Average: ≤50% above TM
+- Poor: >50% above TM
+
+### 11. Glide Path Projections
+
+#### 11.1 Annual Technology Reduction
+```
+Projected_Gross(year) = Current_Gross × (1 - 0.02)^years
+// 2% annual reduction from technology improvements
+```
+
+#### 11.2 Sequestration Ramp
+```
+Projected_Sequestration(year) = Total_Sequestration × min(1, year/5)
+// Full sequestration potential reached in 5 years
+```
+
 ---
 
 ## Conversion Formulas

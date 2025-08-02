@@ -2,7 +2,7 @@ import React from 'react';
 import { DashboardProps } from '../hooks/useDashboardState';
 import { CostBreakdown } from '../components/charts/CostBreakdown';
 import { PerformanceMetrics } from '../components/charts/PerformanceMetrics';
-import { FarmImpact } from '../components/charts/FarmImpact';
+import { FarmImpactV2 } from '../components/charts/FarmImpactV2';
 import { LoanCalculator } from '../components/LoanCalculator';
 import { FeedTuning } from '../components/FeedTuning';
 
@@ -19,7 +19,7 @@ const BasicDashboard: React.FC<DashboardProps> = ({ state, actions }) => {
         <CostBreakdown />
         <PerformanceMetrics />
         <div className="col-span-1 lg:col-span-2">
-          <FarmImpact />
+          <FarmImpactV2 />
         </div>
       </div>
     </div>

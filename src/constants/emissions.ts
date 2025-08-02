@@ -124,3 +124,9 @@ export const CALC_CONSTANTS = {
   MAX_NITROGEN_RATE: 300,
   MIN_NITROGEN_RATE: 0
 } as const;
+
+// Theoretical Minimum (biological floor)
+export const THEORETICAL_MINIMUM = {
+  BASE_PER_COW: 2000, // kg CO2e/year - biological minimum
+  DESCRIPTION: 'Biological floor based on minimal enteric fermentation'
+} as const;
