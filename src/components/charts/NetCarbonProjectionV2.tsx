@@ -3,7 +3,7 @@ import { LineChart, Trees, Info } from 'lucide-react';
 import { useGlidePath } from '../../hooks/useGlidePath';
 import { useCalculations } from '../../hooks/useCalculations';
 
-export const NetCarbonProjectionV2: React.FC = () => {
+const NetCarbonProjectionV2Component: React.FC = () => {
   const { years, canReachNetZero, canReachTM } = useGlidePath();
   const { sequestration } = useCalculations();
   
@@ -291,3 +291,6 @@ export const NetCarbonProjectionV2: React.FC = () => {
     </div>
   );
 };
+
+// Memoize the component to prevent unnecessary re-renders
+export const NetCarbonProjectionV2 = React.memo(NetCarbonProjectionV2Component);
