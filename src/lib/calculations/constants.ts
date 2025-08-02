@@ -10,10 +10,9 @@ export const THEORETICAL_MINIMUM = {
   // Base biological minimum emissions per cow
   // Source: Placeholder - awaiting peer review
   // Note: This is a rough estimate. UK vs NZ figures can differ by ~30%
-  // TODO: Add environment variable override for regional variations
-  BASE_KG_CO2E_PER_COW: process.env.REACT_APP_TM_PER_COW 
-    ? parseFloat(process.env.REACT_APP_TM_PER_COW) 
-    : 2000,
+  // In a production environment, this could be made configurable
+  // via environment variables or a configuration API
+  BASE_KG_CO2E_PER_COW: 2000,
   
   // Reference values for validation
   REFERENCES: {
