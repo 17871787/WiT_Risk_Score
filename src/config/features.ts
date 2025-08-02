@@ -80,7 +80,8 @@ export const getDisabledFeatures = (): string[] => {
 // Development helper to toggle features
 export const toggleFeature = (feature: keyof FeatureFlags): void => {
   // Only allow in development mode
-  if (import.meta.env.DEV) {
+  const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+  if (isDev) {
     FEATURES[feature] = !FEATURES[feature];
     console.log(`Feature ${feature} is now ${FEATURES[feature] ? 'enabled' : 'disabled'}`);
   }

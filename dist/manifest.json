@@ -1,0 +1,20 @@
+{
+  "name": "GHG WHAT-IF Tool",
+  "short_name": "GHG Tool",
+  "description": "Dairy farm greenhouse gas emissions calculator with what-if analysis",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3f4f6",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["business", "productivity", "utilities"],
+  "lang": "en-GB",
+  "dir": "ltr"
+}
