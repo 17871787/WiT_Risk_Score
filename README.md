@@ -4,6 +4,8 @@
 
 A comprehensive React/TypeScript application for dairy farm greenhouse gas (GHG) optimization and carbon footprint analysis.
 
+🚧 **Version 3.0 In Development**: Integrating Nitrogen Use Efficiency (NUE) into sustainability metrics. See [V3_IMPLEMENTATION_ROADMAP.md](./V3_IMPLEMENTATION_ROADMAP.md) for details.
+
 ## Features
 
 - **Real-time GHG calculations** with seasonal adjustments

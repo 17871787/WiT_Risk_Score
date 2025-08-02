@@ -4,6 +4,7 @@ import { CostBreakdown } from '../components/charts/CostBreakdown';
 import { PerformanceMetrics } from '../components/charts/PerformanceMetrics';
 import { FarmImpact } from '../components/charts/FarmImpact';
 import { LoanCalculator } from '../components/LoanCalculator';
+import { FeedTuning } from '../components/FeedTuning';
 
 const BasicDashboard: React.FC<DashboardProps> = ({ state, actions }) => {
   return (
@@ -11,6 +12,9 @@ const BasicDashboard: React.FC<DashboardProps> = ({ state, actions }) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="col-span-1 lg:col-span-2">
           <LoanCalculator />
+        </div>
+        <div className="col-span-1 lg:col-span-2">
+          <FeedTuning />
         </div>
         <CostBreakdown />
         <PerformanceMetrics />
