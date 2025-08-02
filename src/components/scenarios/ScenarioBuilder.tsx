@@ -82,6 +82,26 @@ export const ScenarioBuilder: React.FC = () => {
       revert: () => updateParameter('nitrogenRate', parameters.nitrogenRate + 20),
       isApplied: () => parameters.nitrogenRate < 180, // Default is 180
       impact: '-5% N₂O'
+    },
+    {
+      id: 'improve-feed-quality',
+      name: 'Improve Feed Quality',
+      description: 'Upgrade feed quality by 2 points',
+      icon: <Package className="w-5 h-5" />,
+      apply: () => updateParameter('feedQuality', Math.min(10, parameters.feedQuality + 2)),
+      revert: () => updateParameter('feedQuality', Math.max(1, parameters.feedQuality - 2)),
+      isApplied: () => parameters.feedQuality > 7, // Default is 7
+      impact: '+15% NUE'
+    },
+    {
+      id: 'reduce-concentrate',
+      name: 'Optimize Concentrate Feed',
+      description: 'Reduce concentrate by 1 kg/day',
+      icon: <Minus className="w-5 h-5" />,
+      apply: () => updateParameter('concentrateFeed', Math.max(0, parameters.concentrateFeed - 1)),
+      revert: () => updateParameter('concentrateFeed', parameters.concentrateFeed + 1),
+      isApplied: () => parameters.concentrateFeed < 8, // Default is ~8
+      impact: '+10% feed efficiency'
     }
   ];
 
