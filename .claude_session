@@ -15,14 +15,14 @@
   },
   
   "recent_changes": [
-    "Implemented dashboard architecture with ViewContext",
-    "Created 6 dashboard components for tab-based views",
-    "Added Scenario Builder with practice toggles",
-    "Implemented composite risk scoring",
-    "Reduced bundle size from 570KB to 193KB",
-    "Completed dashboard migration with lazy loading",
-    "Removed sidebar parameter components (now in dashboards)",
-    "Achieved code splitting with Suspense boundaries"
+    "Calibrated emissions to 0.78 kg CO₂e/L minimum",
+    "Made fertility metrics properly impact emissions",
+    "Implemented overflow menu for sidebar tabs",
+    "Added performance penalty indicator",
+    "Created V3 architecture documentation",
+    "Planned NUE integration roadmap",
+    "Prepared for Sprint 0 documentation refresh",
+    "Ready for feed parameter restoration"
   ],
   
   "key_files": [
@@ -41,12 +41,22 @@
   ],
   
   "pending_tasks": [
-    "Populate dashboard components with actual content",
-    "Implement investment ROI calculator",
-    "Add CSV import functionality",
-    "Create PDF export feature",
-    "Integrate Barclays product API"
+    "Sprint 1: Add feed quality parameter to FarmContext",
+    "Sprint 1: Create FeedTuning component",
+    "Sprint 2: Implement useNue hook",
+    "Sprint 2: Create LME+NUE calculations",
+    "Sprint 3: Add feed practices to Scenario Builder",
+    "Sprint 4: Update CSV/PDF exports with NUE",
+    "Sprint 5: Farmer pilot testing"
   ],
+  
+  "v3_planning": {
+    "current_sprint": 0,
+    "sprint_0_status": "Documentation created, ready for type generation",
+    "next_action": "Implement feed quality parameter",
+    "nue_formula": "(Milk N output / Total N applied) × 100",
+    "target_minimum": "0.78 kg CO₂e/L"
+  },
   
   "authentication": {
     "github": "configured via gh CLI",
