@@ -1,22 +1,15 @@
-import React, { useState } from 'react';
-import { Target, TrendingUp } from 'lucide-react';
-import { BasicParameters } from './parameters/BasicParameters';
-import { FarmParameters } from './parameters/FarmParameters';
-import { HeiferParameters } from './parameters/HeiferParameters';
-import { SequestrationParameters } from './parameters/SequestrationParameters';
-import { EffectivenessDisplay } from './EffectivenessDisplay';
-import { ScenarioBuilder } from './scenarios/ScenarioBuilder';
+import React from 'react';
+import { Target } from 'lucide-react';
 import { FarmSummary } from './FarmSummary';
 import { useCalculations } from '../hooks/useCalculations';
+import { useView } from '../context/ViewContext';
 import { PERFORMANCE_THRESHOLDS } from '../constants/emissions';
 
-type TabType = 'basic' | 'farm' | 'heifer' | 'sequestration' | 'effectiveness' | 'scenarios';
-
 export const Sidebar: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabType>('basic');
+  const { activeTab, setActiveTab } = useView();
   const calculations = useCalculations();
   
-  const getTabWarning = (tab: TabType): boolean => {
+  const getTabWarning = (tab: typeof activeTab): boolean => {
     switch (tab) {
       case 'basic':
         return calculations.parameters.feedCarbonFootprint > PERFORMANCE_THRESHOLDS.FEED_CARBON_FOOTPRINT_LIMIT ||
@@ -118,15 +111,7 @@ export const Sidebar: React.FC = () => {
           </button>
         </div>
         
-        {/* Tab Content */}
-        <div className="space-y-6">
-          {activeTab === 'basic' && <BasicParameters />}
-          {activeTab === 'farm' && <FarmParameters />}
-          {activeTab === 'heifer' && <HeiferParameters />}
-          {activeTab === 'sequestration' && <SequestrationParameters />}
-          {activeTab === 'effectiveness' && <EffectivenessDisplay />}
-          {activeTab === 'scenarios' && <ScenarioBuilder />}
-        </div>
+        {/* Tab content now rendered in dashboards */}
       </div>
 
       {/* Farm Summary */}

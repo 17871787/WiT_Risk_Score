@@ -19,7 +19,10 @@
     "Created 6 dashboard components for tab-based views",
     "Added Scenario Builder with practice toggles",
     "Implemented composite risk scoring",
-    "Reduced bundle size from 570KB to 193KB"
+    "Reduced bundle size from 570KB to 193KB",
+    "Completed dashboard migration with lazy loading",
+    "Removed sidebar parameter components (now in dashboards)",
+    "Achieved code splitting with Suspense boundaries"
   ],
   
   "key_files": [

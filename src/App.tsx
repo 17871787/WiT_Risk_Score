@@ -1,61 +1,57 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
-import { LoanCalculator } from './components/LoanCalculator';
-import { CostBreakdown } from './components/charts/CostBreakdown';
-import { PerformanceMetrics } from './components/charts/PerformanceMetrics';
-import { FarmImpact } from './components/charts/FarmImpact';
-import { LMEDisplay } from './components/charts/LMEDisplay';
-import { NetCarbonProjection } from './components/charts/NetCarbonProjection';
-import { ScenarioComparison } from './components/scenarios/ScenarioComparison';
-import { useFarmStore } from './context/FarmContext';
+import { DashboardLoading } from './components/DashboardLoading';
+import { ViewProvider, useView, TabType } from './context/ViewContext';
+import { useDashboardState, useDashboardActions, DashboardProps } from './hooks/useDashboardState';
 import './styles/globals.css';
 
-function App() {
-  const parameters = useFarmStore(state => state.parameters);
+// Lazy load dashboard components
+const BasicDashboard = lazy(() => import('./dashboards/BasicDashboard'));
+const FarmDashboard = lazy(() => import('./dashboards/FarmDashboard'));
+const HeiferDashboard = lazy(() => import('./dashboards/HeiferDashboard'));
+const SequestrationDashboard = lazy(() => import('./dashboards/SequestrationDashboard'));
+const EffectivenessDashboard = lazy(() => import('./dashboards/EffectivenessDashboard'));
+const ScenarioDashboard = lazy(() => import('./dashboards/ScenarioDashboard'));
+
+// Dashboard mapping
+const DASHBOARD_MAP: Record<TabType, React.FC<DashboardProps>> = {
+  basic: BasicDashboard,
+  farm: FarmDashboard,
+  heifer: HeiferDashboard,
+  sequestration: SequestrationDashboard,
+  effectiveness: EffectivenessDashboard,
+  scenarios: ScenarioDashboard,
+};
+
+// Main app content that uses the view context
+function AppContent() {
+  const { activeTab } = useView();
+  const state = useDashboardState();
+  const actions = useDashboardActions();
   
-  // Determine which view to show based on sidebar state
-  const [mainView, setMainView] = React.useState<'default' | 'lme' | 'projection'>('default');
-  
-  // This would be controlled by sidebar in real implementation
-  React.useEffect(() => {
-    // Logic to switch views based on active tab could go here
-  }, []);
+  const ActiveDashboard = DASHBOARD_MAP[activeTab] || BasicDashboard;
   
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar />
       
-      <div className="flex-1 p-6">
+      <div className="flex-1 overflow-auto">
         <Header />
-        
-        {mainView === 'default' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="col-span-1 lg:col-span-2">
-              <LoanCalculator />
-            </div>
-            <CostBreakdown />
-            <PerformanceMetrics />
-            <FarmImpact />
-            <div className="col-span-1 lg:col-span-2">
-              <ScenarioComparison />
-            </div>
-          </div>
-        )}
-        
-        {mainView === 'lme' && (
-          <div className="grid grid-cols-1 gap-6">
-            <LMEDisplay />
-          </div>
-        )}
-        
-        {mainView === 'projection' && (
-          <div className="grid grid-cols-1 gap-6">
-            <NetCarbonProjection />
-          </div>
-        )}
+        <Suspense fallback={<DashboardLoading />}>
+          <ActiveDashboard state={state} actions={actions} />
+        </Suspense>
       </div>
     </div>
+  );
+}
+
+// Root app component with providers
+function App() {
+  return (
+    <ViewProvider>
+      <AppContent />
+    </ViewProvider>
   );
 }
 

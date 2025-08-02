@@ -109,6 +109,12 @@ src/constants/
 
 ## Next Phase Priorities
 
+### Immediate Next Steps (Post-Compact)
+- [x] Migrate existing JSX into dashboard components
+- [x] Implement lazy loading for chart libraries
+- [x] Add Suspense boundaries for code splitting
+- [x] Dashboard migration completed successfully
+
 ### Sprint 0: Tech Debt
 - [ ] Move remaining constants to centralized location
 - [ ] Add scenario snapshot/restore functionality
